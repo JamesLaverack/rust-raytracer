@@ -10,6 +10,7 @@ use self::sphere::Sphere;
 
 pub mod sphere;
 pub mod camera;
+pub mod lensing_world;
 
 pub trait Hittable {
     fn intersect(&self, ray: &Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool;

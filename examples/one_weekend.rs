@@ -16,7 +16,8 @@ use raytracer::materials::dielectric::Dielectric;
 
 use raytracer::objects::sphere::Sphere;
 use raytracer::objects::camera::Camera;
-use raytracer::objects::{Hittable, HittableList, HitRecord};
+use raytracer::objects::lensing_world::LensingWorld;
+use raytracer::objects::{Hittable, HitRecord};
 
 use raytracer::io::write::gen_ppm;
 
@@ -44,48 +45,48 @@ fn color (r: &Ray, world: &Hittable, depth: u64) -> Vec3 {
     }
 }
 
-fn random_scene() -> HittableList {
+fn random_scene() -> LensingWorld {
     let mut rng = rand::thread_rng();
-    
-    let mut list: HittableList = HittableList::new();
-    list.add_sphere(Sphere::new(Vec3::new(0.0, -1000.0, 0.0), 
+
+    let mut world: LensingWorld = LensingWorld::new();
+    world.add_sphere(Sphere::new(Vec3::new(0.0, -1000.0, 0.0),
         1000.0, Material::Lambertian(Lambertian::new(Vec3::new(0.5, 0.5, 0.5)))));
 
     for a in -11..11 {
         for b in -11..11 {
             let choose_mat: f64 = rng.gen::<f64>();
-            let center: Vec3 = Vec3::new(a as f64 + 0.9 * rng.gen::<f64>(), 
+            let center: Vec3 = Vec3::new(a as f64 + 0.9 * rng.gen::<f64>(),
                 0.2, b as f64 + 0.9 * rng.gen::<f64>());
             if (center - Vec3::new(4.0, 0.2, 0.0)).length() > 0.9 {
                 if choose_mat < 0.8 {  // diffuse
-                    list.add_sphere(Sphere::new(center, 0.2, 
+                    world.add_sphere(Sphere::new(center, 0.2,
                         Material::Lambertian(Lambertian::new(Vec3::new(
-                            rng.gen::<f64>()*rng.gen::<f64>(), 
-                            rng.gen::<f64>()*rng.gen::<f64>(), 
+                            rng.gen::<f64>()*rng.gen::<f64>(),
+                            rng.gen::<f64>()*rng.gen::<f64>(),
                             rng.gen::<f64>()*rng.gen::<f64>())))));
                 } else if choose_mat < 0.95 {  //metal
-                    list.add_sphere(Sphere::new(center, 0.2, 
+                    world.add_sphere(Sphere::new(center, 0.2,
                         Material::Metal(Metal::new(Vec3::new(
-                            0.5 * (1.0 + rng.gen::<f64>()), 
-                            0.5 * (1.0 + rng.gen::<f64>()), 
+                            0.5 * (1.0 + rng.gen::<f64>()),
+                            0.5 * (1.0 + rng.gen::<f64>()),
                             0.5 * (1.0 + rng.gen::<f64>())),
                             0.5 * rng.gen::<f64>()))));
                 } else {  // dielectric
-                    list.add_sphere(Sphere::new(center, 0.2, 
+                    world.add_sphere(Sphere::new(center, 0.2,
                         Material::Dielectric(Dielectric::new(1.5))));
                 }
             }
 
-            list.add_sphere(Sphere::new(Vec3::new(0.0, 1.0, 0.0), 1.0, 
+            world.add_sphere(Sphere::new(Vec3::new(0.0, 1.0, 0.0), 1.0,
                 Material::Dielectric(Dielectric::new(1.5))));
-            list.add_sphere(Sphere::new(Vec3::new(-4.0, 1.0, 0.0), 1.0, 
+            world.add_sphere(Sphere::new(Vec3::new(-4.0, 1.0, 0.0), 1.0,
                 Material::Lambertian(Lambertian::new(Vec3::new(0.4, 0.4, 0.1)))));
-            list.add_sphere(Sphere::new(Vec3::new(4.0, 1.0, 0.0), 1.0, 
+            world.add_sphere(Sphere::new(Vec3::new(4.0, 1.0, 0.0), 1.0,
                 Material::Metal(Metal::new(Vec3::new(0.7, 0.6, 0.5), 0.0))));
         }
     }
 
-    list
+    world
 }
 
 fn main() {
@@ -95,10 +96,10 @@ fn main() {
     let ny: u64 = 800;
     let ns: u64 = 1;
 
-    let cam: Camera = Camera::new(Vec3::new(13.0, 2.0, 3.0), Vec3::new(0.0, 0.0, 0.0), 
+    let cam: Camera = Camera::new(Vec3::new(13.0, 2.0, 3.0), Vec3::new(0.0, 0.0, 0.0),
     Vec3::new(0.0, 1.0, 0.0), 20.0, (nx as f64)/(ny as f64), 0.1, 10.0);
 
-    let world: HittableList = random_scene();
+    let world: LensingWorld = random_scene();
 
     let bar = ProgressBar::new(ny);
     bar.set_style(ProgressStyle::default_bar().template("[{elapsed} elapsed] {wide_bar:.cyan/white} {percent}% [{eta} remaining] [rendering]"));
