@@ -52,8 +52,8 @@ fn random_scene() -> LensingWorld {
     world.add_sphere(Sphere::new(Vec3::new(0.0, -1000.0, 0.0),
         1000.0, Material::Lambertian(Lambertian::new(Vec3::new(0.5, 0.5, 0.5)))));
 
-    for a in -11..11 {
-        for b in -11..11 {
+    for a in -4..4 {
+        for b in -4..4 {
             let choose_mat: f64 = rng.gen::<f64>();
             let center: Vec3 = Vec3::new(a as f64 + 0.9 * rng.gen::<f64>(),
                 0.2, b as f64 + 0.9 * rng.gen::<f64>());
@@ -77,8 +77,8 @@ fn random_scene() -> LensingWorld {
                 }
             }
 
-            world.add_sphere(Sphere::new(Vec3::new(0.0, 1.0, 0.0), 1.0,
-                Material::Dielectric(Dielectric::new(1.5))));
+//            world.add_sphere(Sphere::new(Vec3::new(0.0, -2.0, 0.0), 1.0,
+//                Material::Dielectric(Dielectric::new(1.5))));
             world.add_sphere(Sphere::new(Vec3::new(-4.0, 1.0, 0.0), 1.0,
                 Material::Lambertian(Lambertian::new(Vec3::new(0.4, 0.4, 0.1)))));
             world.add_sphere(Sphere::new(Vec3::new(4.0, 1.0, 0.0), 1.0,

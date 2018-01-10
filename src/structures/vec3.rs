@@ -127,6 +127,10 @@ impl Vec3 {
             self.x() * other.y() - self.y() * other.x()]}
     }
 
+    pub fn distance(&self, other: &Vec3) -> f64 {
+        (*self - *other).length()
+    }
+
     /// Converts floats to ints, colors are
     /// supposed to be integer values between 0 and 255.
     pub fn colorize(&mut self) -> () {
@@ -156,6 +160,13 @@ fn test_rgb() {
     assert_eq!(vec.r(), 0.2);
     assert_eq!(vec.g(), 0.4);
     assert_eq!(vec.b(), 0.7347845);
+}
+
+#[test]
+fn test_distance() {
+    let a: Vec3 = Vec3::new(1.0, 0.0, 0.0);
+    let b: Vec3 = Vec3::new(5.0, 0.0, 0.0);
+    assert_eq!(a.distance(&b), 4.0);
 }
 
 #[test]

@@ -29,8 +29,15 @@ impl Ray {
 
     pub fn apply_gravity_and_march(self, gravity_point: &Vec3, strength: f64, m: f64) -> Ray  {
         let direction_of_force = (*gravity_point - self.origin()).unit_vector();
-        let new_ray_direction = ((direction_of_force * strength) + (self.direction() * (1.0 - strength))).unit_vector();
-        Ray::new(self.point_at_parameter(m), new_ray_direction)
+        let distance = gravity_point.distance(&self.origin()) - 0.5;
+        if distance >= 0.0 {
+            let magnitude = (1.0 / (distance * distance)) * strength;
+            let new_ray_direction = ((direction_of_force * magnitude) + (self.direction() * (1.0 - magnitude))).unit_vector();
+            return Ray::new(self.point_at_parameter(m), new_ray_direction);
+        } else {
+            // we're inside the black hole
+            return Ray::new(Vec3::new(1000.0, 0.0, 0.0), Vec3::new(0.0, 0.0, 0.0));
+        }
     }
 }
 
