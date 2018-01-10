@@ -26,6 +26,12 @@ impl Ray {
     pub fn march(&self, m: f64) -> Ray {
         Ray::new(self.point_at_parameter(m), self.direction())
     }
+
+    pub fn apply_gravity_and_march(self, gravity_point: &Vec3, strength: f64, m: f64) -> Ray  {
+        let direction_of_force = (*gravity_point - self.origin()).unit_vector();
+        let new_ray_direction = ((direction_of_force * strength) + (self.direction() * (1.0 - strength))).unit_vector();
+        Ray::new(self.point_at_parameter(m), new_ray_direction)
+    }
 }
 
 impl PartialEq for Ray {

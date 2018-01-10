@@ -92,8 +92,8 @@ fn random_scene() -> LensingWorld {
 fn main() {
     let filename = "outputs/one_weekend.png".to_string();
 
-    let nx: u64 = 1200;
-    let ny: u64 = 800;
+    let nx: u64 = 600;
+    let ny: u64 = 400;
     let ns: u64 = 1;
 
     let cam: Camera = Camera::new(Vec3::new(13.0, 2.0, 3.0), Vec3::new(0.0, 0.0, 0.0),
