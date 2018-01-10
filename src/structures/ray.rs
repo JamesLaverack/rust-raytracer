@@ -1,6 +1,6 @@
 use structures::vec3::Vec3;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Ray {
     a: Vec3,
     b: Vec3,
@@ -22,6 +22,10 @@ impl Ray {
     pub fn point_at_parameter(&self, t: f64) -> Vec3 {
         self.a + t * self.b 
     }
+
+    pub fn march(&self, m: f64) -> Ray {
+        Ray::new(self.point_at_parameter(m), self.direction())
+    }
 }
 
 impl PartialEq for Ray {
@@ -36,6 +40,15 @@ fn test_origin() {
     let direction: Vec3 = Vec3::new(3.0, 4.0, 1.0);
     let ray: Ray = Ray::new(origin, direction);
     assert_eq!(ray.origin(), origin);
+}
+
+#[test]
+fn test_march() {
+    let origin: Vec3 = Vec3::new(1.0, 2.0, 3.0);
+    let direction: Vec3 = Vec3::new(3.0, 4.0, 1.0);
+    let mut ray: Ray = Ray::new(origin, direction);
+    ray = ray.march(1.0);
+    assert_ne!(ray.origin(), origin);
 }
 
 #[test]
