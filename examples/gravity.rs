@@ -48,7 +48,7 @@ fn color (r: &Ray, world: &Hittable, depth: u64) -> Vec3 {
 fn random_scene() -> LensingWorld {
     let mut rng = rand::thread_rng();
 
-    let mut world: LensingWorld = LensingWorld::new();
+    let mut world: LensingWorld = LensingWorld::new(Vec3::new(-1.0, 1.0, 0.0), 0.15);
     world.add_sphere(Sphere::new(Vec3::new(0.0, -1000.0, 0.0),
         1000.0, Material::Lambertian(Lambertian::new(Vec3::new(0.5, 0.5, 0.5)))));
 
@@ -77,8 +77,6 @@ fn random_scene() -> LensingWorld {
                 }
             }
 
-//            world.add_sphere(Sphere::new(Vec3::new(0.0, -2.0, 0.0), 1.0,
-//                Material::Dielectric(Dielectric::new(1.5))));
             world.add_sphere(Sphere::new(Vec3::new(-4.0, 1.0, 0.0), 1.0,
                 Material::Lambertian(Lambertian::new(Vec3::new(0.4, 0.4, 0.1)))));
             world.add_sphere(Sphere::new(Vec3::new(4.0, 1.0, 0.0), 1.0,

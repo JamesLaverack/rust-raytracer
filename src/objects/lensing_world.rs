@@ -11,22 +11,18 @@ use std::f64;
 
 pub struct LensingWorld {
     spheres: Vec<Sphere>,
-    weights: Vec<Vec3>,
+    gravity_point: Vec3,
+    gravity_strength: f64,
 }
 
 impl LensingWorld {
-    pub fn new() -> LensingWorld {
-        let spheres_list: Vec<Sphere> = Vec::new();
-        let weights_list: Vec<Vec3> = Vec::new();
-        LensingWorld { spheres: spheres_list, weights: weights_list }
+    pub fn new(gravity_point: Vec3, gravity_strength: f64) -> LensingWorld {
+        let spheres: Vec<Sphere> = Vec::new();
+        LensingWorld { spheres, gravity_point, gravity_strength }
     }
 
     pub fn add_sphere(&mut self, sphere: Sphere) {
         self.spheres.push(sphere);
-    }
-
-    pub fn add_weight(&mut self, weight: Vec3) {
-        self.weights.push(weight);
     }
 
     pub fn size(&self) -> usize {
@@ -56,10 +52,11 @@ impl Hittable for LensingWorld {
             if hit_anything {
                 return hit_anything;
             }
-            // March ray forwards
 
-            ray = ray.apply_gravity_and_march(&Vec3::new(-1.0, 1.0, 0.0), max_step * 0.15, max_step);
-            //ray = ray.march(max_step);
+            // March ray forwards
+            ray = ray.apply_gravity_and_march(&self.gravity_point, max_step * self.gravity_strength, max_step);
+
+            // We hit the black hole, eat the ray
             if ray.direction() == Vec3::new(0.0, 0.0, 0.0) {
                 return false
             }
