@@ -37,7 +37,7 @@ impl LensingWorld {
 impl Hittable for LensingWorld {
     fn intersect(&self, start_ray: &Ray, t_min: f64, t_max: f64, rec: &mut HitRecord) -> bool {
         let max_step: f64 = 0.1;
-        let max_iter: u32 = 1000;
+        let max_iter: u32 = 500;
         let mut temp_rec: HitRecord = HitRecord::new();
         let mut hit_anything: bool = false;
         let mut closest_so_far: f64 = t_max;
