@@ -90,7 +90,7 @@ fn random_scene() -> LensingWorld {
 }
 
 fn main() {
-    let filename = "outputs/one_weekend.png".to_string();
+    let filename = "outputs/gravity.png".to_string();
 
     let nx: u64 = 1200;
     let ny: u64 = 800;

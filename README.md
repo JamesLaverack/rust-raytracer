@@ -6,5 +6,5 @@ A ray tracer in rust implementing gravitational lensing. Based on a Ray Tracer i
 ## Running
 
 ```bash
-cargo run --release --example one_weekend
+cargo run --release --example gravity
 ```
